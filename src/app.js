@@ -3,20 +3,20 @@ import { lessons, admissionQuestions, finalQuestions } from './content.js';
 const STORAGE_KEY = 'darwin-lab-session-01';
 const ASSETS = {
   images: [
-    '/darwin-lab/assets/photos/00-galapagos-portada.webp',
-    '/darwin-lab/assets/photos/01-jirafas.webp',
-    '/darwin-lab/assets/photos/02-pinzones-casos.webp',
-    '/darwin-lab/assets/photos/03-resistencia-bacteriana.webp',
-    '/darwin-lab/assets/photos/04-fosiles.webp',
-    '/darwin-lab/assets/photos/05-evolucion-caracoles.webp',
-    '/darwin-lab/assets/photos/06-variabilidad-pinzones.webp',
-    '/darwin-lab/assets/photos/07-sobreproduccion-plantulas.webp',
-    '/darwin-lab/assets/photos/08-competencia-pinzones.webp',
-    '/darwin-lab/assets/photos/09-seleccion-polillas.webp',
-    '/darwin-lab/assets/photos/10-cuaderno-darwin.webp',
-    '/darwin-lab/assets/photos/11-admision-universitaria.webp'
+    'assets/photos/00-galapagos-portada.webp',
+    'assets/photos/01-jirafas.webp',
+    'assets/photos/02-pinzones-casos.webp',
+    'assets/photos/03-resistencia-bacteriana.webp',
+    'assets/photos/04-fosiles.webp',
+    'assets/photos/05-evolucion-caracoles.webp',
+    'assets/photos/06-variabilidad-pinzones.webp',
+    'assets/photos/07-sobreproduccion-plantulas.webp',
+    'assets/photos/08-competencia-pinzones.webp',
+    'assets/photos/09-seleccion-polillas.webp',
+    'assets/photos/10-cuaderno-darwin.webp',
+    'assets/photos/11-admision-universitaria.webp'
   ],
-  audio: lessons.map(lesson => `/darwin-lab/audio/${lesson.audio}`)
+  audio: lessons.map(lesson => `audio/${lesson.audio}`)
 };
 
 function initialState() {
@@ -65,7 +65,7 @@ function renderLessons() {
       <div class="lesson-number" aria-hidden="true">${lesson.number}</div><div class="lesson-body">
       <div class="lesson-eyebrow">${html(lesson.eyebrow)} <span aria-hidden="true">·</span> ${html(lesson.duration)}</div>
       <h3 class="lesson-title" id="title-${lesson.id}">${html(lesson.title)}</h3><p class="lesson-lead">${html(lesson.lead)}</p>
-      <div class="module-narration"><span class="narration-label"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3V5L6 8H3Zm10-1.5a5 5 0 0 1 0 7m2-9a8 8 0 0 1 0 11"/></svg>ESCUCHAR MÓDULO</span><audio controls preload="none" aria-label="Narración: ${html(lesson.title)}"><source src="/darwin-lab/audio/${html(lesson.audio)}" type="audio/mpeg">Tu navegador no admite audio HTML5. Puedes consultar los apuntes de lectura.</audio></div>
+      <div class="module-narration"><span class="narration-label"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3V5L6 8H3Zm10-1.5a5 5 0 0 1 0 7m2-9a8 8 0 0 1 0 11"/></svg>ESCUCHAR MÓDULO</span><audio controls preload="none" aria-label="Narración: ${html(lesson.title)}"><source src="audio/${html(lesson.audio)}" type="audio/mpeg">Tu navegador no admite audio HTML5. Puedes consultar los apuntes de lectura.</audio></div>
       <details class="transcript-details" id="transcript-${lesson.id}"><summary class="audio-transcript">Abrir apuntes de la lección</summary><p>${html(transcript)}</p></details>
       <div class="lesson-sections">${sections}</div>${renderStepGraphic(lesson.infographic, lesson)}
       <aside class="misconception"><span class="label">ACLARA EL MITO</span><p><b>${html(lesson.misconception[0])}</b><br>${html(lesson.misconception[1])}</p></aside>
@@ -313,7 +313,7 @@ offlineButton.addEventListener('click', async () => {
   try {
     const registration = await navigator.serviceWorker.ready;
     const cache = await caches.open('darwin-lab-v5');
-    const core = ['/darwin-lab/', '/darwin-lab/index.html', '/darwin-lab/src/styles.css', '/darwin-lab/src/content.js', '/darwin-lab/src/app.js', '/darwin-lab/manifest.webmanifest', '/darwin-lab/manus-routes.json', '/darwin-lab/assets/darwin-mark.svg'];
+    const core = ['./', 'index.html', 'src/styles.css', 'src/content.js', 'src/app.js', 'manifest.webmanifest', 'manus-routes.json', 'assets/darwin-mark.svg'];
     await cache.addAll(core);
     const media = [...ASSETS.audio, ...ASSETS.images];
     const results = await Promise.allSettled(media.map(path => cache.add(path)));
@@ -327,5 +327,5 @@ offlineButton.addEventListener('click', async () => {
 });
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('/darwin-lab/sw.js').catch(error => console.warn('No se pudo activar el acceso sin conexión.', error)));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(error => console.warn('No se pudo activar el acceso sin conexión.', error)));
 }

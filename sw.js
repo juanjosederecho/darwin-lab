@@ -1,5 +1,5 @@
 const CACHE_NAME = 'darwin-lab-v5';
-const CORE_FILES = ['/darwin-lab/', '/darwin-lab/index.html', '/darwin-lab/src/styles.css', '/darwin-lab/src/content.js', '/darwin-lab/src/app.js', '/darwin-lab/manifest.webmanifest', '/darwin-lab/manus-routes.json', '/darwin-lab/assets/darwin-mark.svg'];
+const CORE_FILES = ['./', 'index.html', 'src/styles.css', 'src/content.js', 'src/app.js', 'manifest.webmanifest', 'manus-routes.json', 'assets/darwin-mark.svg'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_FILES)).then(() => self.skipWaiting()));
 });
@@ -18,13 +18,13 @@ self.addEventListener('fetch', event => {
     if (cached) return cached;
     try {
       const response = await fetch(request);
-      if (response.ok && (request.destination === 'image' || request.destination === 'audio' || new URL(request.url).pathname.startsWith('/darwin-lab/src/'))) {
+      if (response.ok && (request.destination === 'image' || request.destination === 'audio' || new URL(request.url).pathname.includes('/src/'))) {
         cache.put(request, response.clone()).catch(() => {});
       }
       return response;
     } catch (error) {
       if (request.mode === 'navigate') {
-        const offlineIndex = await cache.match('/darwin-lab/index.html');
+        const offlineIndex = await cache.match('index.html');
         if (offlineIndex) return offlineIndex;
       }
       return new Response('Este recurso aún no se guardó en el dispositivo. Conéctate para cargarlo.', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
